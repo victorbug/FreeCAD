@@ -1,0 +1,128 @@
+import FreeCAD, Part
+
+def create_hollow_cylinder(outer_diameter, inner_diameter, height):
+    """Create a hollow cylinder (tube)."""
+    outer_cylinder = Part.makeCylinder(outer_diameter / 2, height)
+    inner_cylinder = Part.makeCylinder(inner_diameter / 2, height + 2)  # Slightly longer to ensure hollow effect
+    hollow_cylinder = outer_cylinder.cut(inner_cylinder)
+    return hollow_cylinder
+
+# Create a new document
+doc = FreeCAD.newDocument("HollowCylindersTShape")
+
+distancia_desde_centro_def=10
+#outer_diameter = 4   # Outer diameter of the hollow cylinder
+#inner_diameter = 3.8   # Inner diameter of the hollow cylinder
+#height_vertical = 9 # Height of the vertical hollow cylinder
+#height_horizontal = 14 # Height of the horizontal hollow cylinder
+
+outer_diameter_def = 4   # Outer diameter of the hollow cylinder
+inner_diameter_def = 3.8   # Inner diameter of the hollow cylinder
+height_vertical_def = 9 # Height of the vertical hollow cylinder
+height_horizontal_def = 14 # Height of the horizontal hollow cylinder
+
+height_vertical_cilindrito_def=7
+
+
+
+def create_TShape(outer_diameter, inner_diameter, height_vertical, height_horizontal, distancia_desde_centro):
+#if (True):
+
+    # Create the vertical hollow cylinder and position it at (0,0,0)
+    vertical_cylinder = create_hollow_cylinder(outer_diameter, inner_diameter, height_vertical)
+    vertical_cylinder.Placement.Base = FreeCAD.Vector(distancia_desde_centro, 0, 0)
+	
+    # Add the vertical hollow cylinder to the document
+    #vertical_cylinder_obj = doc.addObject("Part::Feature", "VerticalHollowCylinder")
+    #vertical_cylinder_obj.Shape = vertical_cylinder
+	
+    # Create the horizontal hollow cylinder and position it correctly
+    horizontal_cylinder = create_hollow_cylinder(outer_diameter, inner_diameter, height_horizontal)
+    # Position and rotate the horizontal hollow cylinder
+    horizontal_cylinder.Placement.Base = FreeCAD.Vector(distancia_desde_centro -height_horizontal/2, 0, height_vertical-outer_diameter/2)
+    horizontal_cylinder.Placement.Rotation = FreeCAD.Rotation(FreeCAD.Vector(0, 1, 0), 90)  # Rotate 90 degrees around the Y-axis
+    
+    # Add the horizontal hollow cylinder to the document
+    #horizontal_cylinder_obj = doc.addObject("Part::Feature", "HorizontalHollowCylinder")
+    #horizontal_cylinder_obj.Shape = horizontal_cylinder
+	
+    # Fuse the cylinders to create the final shape
+    final_shape = vertical_cylinder.fuse(horizontal_cylinder)
+	
+    # Add the final shape to the document
+    final_shape_obj = doc.addObject("Part::Feature", "FinalShape")
+    final_shape_obj.Shape = final_shape
+    return()
+
+def create_Cilindrito(outer_diameter, 
+		inner_diameter, 
+		height_vertical, 
+		distancia_desde_centro_horizontal,
+		distancia_desde_centro_vertical):
+
+    # Create the vertical hollow cylinder and position it at (0,0,0)
+    cilindrito = create_hollow_cylinder(outer_diameter, inner_diameter, height_vertical)
+    cilindrito.Placement.Base = FreeCAD.Vector(distancia_desde_centro_horizontal, 
+				      0, 
+				       distancia_desde_centro_vertical)
+    final_shape_obj = doc.addObject("Part::Feature", "Cilindrito")
+    final_shape_obj.Shape = cilindrito
+    return()
+
+
+distancia_desde_centro_vertical_def=0 #para que se vayan mostrando bien las piezas
+
+create_TShape(outer_diameter_def, 
+	    inner_diameter_def, 
+              height_vertical_def, 
+              height_horizontal_def,
+              -distancia_desde_centro_def)
+
+create_TShape(outer_diameter_def, 
+	    inner_diameter_def, 
+              height_vertical_def, 
+              height_horizontal_def,
+              distancia_desde_centro_def)
+
+distancia_desde_centro_vertical_def=distancia_desde_centro_vertical_def-15
+
+create_Cilindrito(outer_diameter_def, 
+		inner_diameter_def, 
+		height_vertical_cilindrito_def, 
+		distancia_desde_centro_def, 
+		distancia_desde_centro_vertical_def)
+
+create_Cilindrito(outer_diameter_def, 
+		inner_diameter_def, 
+		height_vertical_cilindrito_def, 
+		-distancia_desde_centro_def, 
+		distancia_desde_centro_vertical_def)
+
+distancia_desde_centro_vertical_def=distancia_desde_centro_vertical_def-10
+
+create_Cilindrito(outer_diameter_def, 
+		inner_diameter_def, 
+		height_vertical_cilindrito_def, 
+		distancia_desde_centro_def, 
+		distancia_desde_centro_vertical_def)
+
+create_Cilindrito(outer_diameter_def, 
+		inner_diameter_def, 
+		height_vertical_cilindrito_def, 
+		-distancia_desde_centro_def, 
+		distancia_desde_centro_vertical_def)
+
+
+
+
+
+
+# Recalculate the document to apply changes
+doc.recompute()
+
+# Optionally, adjust the view to fit the new object
+view = FreeCAD.Gui.ActiveDocument.ActiveView
+view.viewAxonometric()
+
+print("Hollow cylinders created and merged successfully!")
+
