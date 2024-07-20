@@ -6,11 +6,11 @@ import PartDesign
 import PartDesignGui
 import Sketcher
 
-int_diametrocirculo=4
-int_ladoSimetrico=14
+int_diametrocirculo=2
+int_ladoSimetrico=7
 
 int_cifra_desconocida_1=2
-int_cifra_desconocida_2=10
+int_cifra_desconocida_2=6
 int_cifra_desconocida_3=3 #parece que es un radio
 
 #4, 14, 2, 10, 4. Funcionan
@@ -26,7 +26,7 @@ App.getDocument('Unnamed').getObject('Sketch').Support = (App.getDocument('Unnam
 App.getDocument('Unnamed').getObject('Sketch').MapMode = 'FlatFace'
 App.ActiveDocument.recompute()
 
-App.getDocument('Unnamed').getObject('Sketch').addGeometry(Part.Circle(App.Vector(0.000000,0.000000,0),App.Vector(0,0,1),int_diametrocirculo),False)
+App.getDocument('Unnamed').getObject('Sketch').addGeometry(Part.Circle(App.Vector(0,0,0),App.Vector(0,0,1),int_diametrocirculo),False)
 App.getDocument('Unnamed').getObject('Sketch').addConstraint(Sketcher.Constraint('Coincident',0,3,-1,1)) 
 
 App.ActiveDocument.recompute()
@@ -38,10 +38,10 @@ App.getDocument('Unnamed').getObject('Sketch001').Support = (App.getDocument('Un
 App.getDocument('Unnamed').getObject('Sketch001').MapMode = 'FlatFace'
 App.ActiveDocument.recompute()
 
-App.getDocument('Unnamed').getObject('Sketch001').addGeometry(Part.LineSegment(App.Vector(0.000000,0.000000,0),App.Vector(0.000000,int_ladoSimetrico,0)),False)
+App.getDocument('Unnamed').getObject('Sketch001').addGeometry(Part.LineSegment(App.Vector(0,0,0),App.Vector(0,int_ladoSimetrico,0)),False)
 App.getDocument('Unnamed').getObject('Sketch001').addConstraint(Sketcher.Constraint('Coincident',-1,1,0,1)) 
 App.getDocument('Unnamed').getObject('Sketch001').addConstraint(Sketcher.Constraint('PointOnObject',0,2,-2)) 
-App.getDocument('Unnamed').getObject('Sketch001').addGeometry(Part.LineSegment(App.Vector(0.000000,int_ladoSimetrico,0),App.Vector(int_ladoSimetrico,int_ladoSimetrico,0)),False)
+App.getDocument('Unnamed').getObject('Sketch001').addGeometry(Part.LineSegment(App.Vector(0,int_ladoSimetrico,0),App.Vector(int_ladoSimetrico,int_ladoSimetrico,0)),False)
 App.getDocument('Unnamed').getObject('Sketch001').addConstraint(Sketcher.Constraint('Coincident',0,2,1,1)) 
 App.getDocument('Unnamed').getObject('Sketch001').addConstraint(Sketcher.Constraint('Horizontal',1)) 
 
@@ -63,3 +63,5 @@ App.ActiveDocument.recompute()
 App.getDocument('Unnamed').getObject('AdditivePipe').Spine = (FreeCAD.getDocument('Unnamed').getObject('Sketch001'),[])
 App.getDocument('Unnamed').recompute()
 
+view = FreeCAD.Gui.ActiveDocument.ActiveView
+view.viewAxonometric()
