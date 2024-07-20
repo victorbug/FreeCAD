@@ -1,67 +1,81 @@
 # -*- coding: utf-8 -*-
 
-
-import FreeCAD
+import FreeCAD as App
+import FreeCADGui as Gui
 import PartDesign
 import PartDesignGui
 import Sketcher
 
-int_diametrocirculo=2
-int_ladoSimetrico=7
+# Parameters
+int_diametrocirculo = 2
+int_ladoSimetrico = 7
+int_cifra_desconocida_1 = 2
+int_cifra_desconocida_2 = 6
+int_cifra_desconocida_3 = 3  # seems to be a radius
 
-int_cifra_desconocida_1=2
-int_cifra_desconocida_2=6
-int_cifra_desconocida_3=3 #parece que es un radio
+def create_new_document():
+    App.newDocument()
+    App.activeDocument().addObject('PartDesign::Body', 'Body')
+    App.ActiveDocument.getObject('Body').Label = 'Body'
+    App.ActiveDocument.recompute()
 
-#4, 14, 2, 10, 4. Funcionan
-App.newDocument()
+def create_sketch_on_xy_plane():
+    doc = App.getDocument('Unnamed')
+    body = doc.getObject('Body')
+    sketch = body.newObject('Sketcher::SketchObject', 'Sketch')
+    sketch.Support = (doc.getObject('XY_Plane'), [''])
+    sketch.MapMode = 'FlatFace'
+    App.ActiveDocument.recompute()
+    return sketch
 
-App.activeDocument().addObject('PartDesign::Body','Body')
-App.ActiveDocument.getObject('Body').Label = 'Body'
+def add_circle_to_sketch(sketch):
+    sketch.addGeometry(Part.Circle(App.Vector(0, 0, 0), App.Vector(0, 0, 1), int_diametrocirculo), False)
+    sketch.addConstraint(Sketcher.Constraint('Coincident', 0, 3, -1, 1)) 
+    App.ActiveDocument.recompute()
 
-App.ActiveDocument.recompute()
+def create_sketch_on_xz_plane():
+    doc = App.getDocument('Unnamed')
+    body = doc.getObject('Body')
+    sketch = body.newObject('Sketcher::SketchObject', 'Sketch001')
+    sketch.Support = (doc.getObject('XZ_Plane'), [''])
+    sketch.MapMode = 'FlatFace'
+    App.ActiveDocument.recompute()
+    return sketch
 
-App.getDocument('Unnamed').getObject('Body').newObject('Sketcher::SketchObject','Sketch')
-App.getDocument('Unnamed').getObject('Sketch').Support = (App.getDocument('Unnamed').getObject('XY_Plane'),[''])
-App.getDocument('Unnamed').getObject('Sketch').MapMode = 'FlatFace'
-App.ActiveDocument.recompute()
+def add_lines_and_fillet_to_sketch(sketch):
+    sketch.addGeometry(Part.LineSegment(App.Vector(0, 0, 0), App.Vector(0, int_ladoSimetrico, 0)), False)
+    sketch.addConstraint(Sketcher.Constraint('Coincident', -1, 1, 0, 1)) 
+    sketch.addConstraint(Sketcher.Constraint('PointOnObject', 0, 2, -2)) 
+    sketch.addGeometry(Part.LineSegment(App.Vector(0, int_ladoSimetrico, 0), App.Vector(int_ladoSimetrico, int_ladoSimetrico, 0)), False)
+    sketch.addConstraint(Sketcher.Constraint('Coincident', 0, 2, 1, 1)) 
+    sketch.addConstraint(Sketcher.Constraint('Horizontal', 1)) 
+    sketch.fillet(1, 0, App.Vector(int_cifra_desconocida_1, int_ladoSimetrico, 0), App.Vector(0, int_cifra_desconocida_2, 0), int_cifra_desconocida_3, True, False)
+    App.ActiveDocument.recompute()
 
-App.getDocument('Unnamed').getObject('Sketch').addGeometry(Part.Circle(App.Vector(0,0,0),App.Vector(0,0,1),int_diametrocirculo),False)
-App.getDocument('Unnamed').getObject('Sketch').addConstraint(Sketcher.Constraint('Coincident',0,3,-1,1)) 
+def create_additive_pipe():
+    doc = App.getDocument('Unnamed')
+    body = doc.getObject('Body')
+    pipe = body.newObject('PartDesign::AdditivePipe', 'AdditivePipe')
+    pipe.Profile = doc.getObject('Sketch')
+    App.ActiveDocument.recompute()
+    doc.getObject('Sketch').Visibility = False
+    App.ActiveDocument.recompute()
+    pipe.Spine = (doc.getObject('Sketch001'), [])
+    App.ActiveDocument.recompute()
 
-App.ActiveDocument.recompute()
+def set_view_to_axonometric():
+    view = Gui.ActiveDocument.ActiveView
+    view.viewAxonometric()
+    view.fitAll()
 
-App.getDocument('Unnamed').recompute()
+def main():
+    create_new_document()
+    sketch1 = create_sketch_on_xy_plane()
+    add_circle_to_sketch(sketch1)
+    sketch2 = create_sketch_on_xz_plane()
+    add_lines_and_fillet_to_sketch(sketch2)
+    create_additive_pipe()
+    set_view_to_axonometric()
 
-App.getDocument('Unnamed').getObject('Body').newObject('Sketcher::SketchObject','Sketch001')
-App.getDocument('Unnamed').getObject('Sketch001').Support = (App.getDocument('Unnamed').getObject('XZ_Plane'),[''])
-App.getDocument('Unnamed').getObject('Sketch001').MapMode = 'FlatFace'
-App.ActiveDocument.recompute()
-
-App.getDocument('Unnamed').getObject('Sketch001').addGeometry(Part.LineSegment(App.Vector(0,0,0),App.Vector(0,int_ladoSimetrico,0)),False)
-App.getDocument('Unnamed').getObject('Sketch001').addConstraint(Sketcher.Constraint('Coincident',-1,1,0,1)) 
-App.getDocument('Unnamed').getObject('Sketch001').addConstraint(Sketcher.Constraint('PointOnObject',0,2,-2)) 
-App.getDocument('Unnamed').getObject('Sketch001').addGeometry(Part.LineSegment(App.Vector(0,int_ladoSimetrico,0),App.Vector(int_ladoSimetrico,int_ladoSimetrico,0)),False)
-App.getDocument('Unnamed').getObject('Sketch001').addConstraint(Sketcher.Constraint('Coincident',0,2,1,1)) 
-App.getDocument('Unnamed').getObject('Sketch001').addConstraint(Sketcher.Constraint('Horizontal',1)) 
-
-
-App.getDocument('Unnamed').getObject('Sketch001').fillet(1,0,App.Vector(int_cifra_desconocida_1,int_ladoSimetrico,0),App.Vector(0,int_cifra_desconocida_2,0),int_cifra_desconocida_3,True,False)
-#App.getDocument('Unnamed').getObject('Sketch001').fillet(1,0,App.Vector(10.967747,int_ladoSimetrico,0),App.Vector(0.000000,28.709686,0),8.276079,True,False)
-
-App.ActiveDocument.recompute()
-
-App.getDocument('Unnamed').recompute()
-
-
-App.getDocument('Unnamed').getObject('Body').newObject('PartDesign::AdditivePipe','AdditivePipe')
-App.getDocument('Unnamed').getObject('AdditivePipe').Profile = App.getDocument('Unnamed').getObject('Sketch')
-App.ActiveDocument.recompute()
-App.getDocument('Unnamed').getObject('Sketch').Visibility = False
-App.ActiveDocument.recompute()
-
-App.getDocument('Unnamed').getObject('AdditivePipe').Spine = (FreeCAD.getDocument('Unnamed').getObject('Sketch001'),[])
-App.getDocument('Unnamed').recompute()
-
-view = FreeCAD.Gui.ActiveDocument.ActiveView
-view.viewAxonometric()
+if __name__ == "__main__":
+    main()
