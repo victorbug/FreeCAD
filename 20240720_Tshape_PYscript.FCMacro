@@ -23,9 +23,10 @@ height_horizontal_def = 14 # Height of the horizontal hollow cylinder
 
 height_vertical_cilindrito_def=7
 
+height_vertical_cilindroGrande_def=60
 
 
-def create_TShape(outer_diameter, inner_diameter, height_vertical, height_horizontal, distancia_desde_centro):
+def create_TShape(outer_diameter, inner_diameter, height_vertical, height_horizontal, distancia_desde_centro, nombre):
 #if (True):
 
     # Create the vertical hollow cylinder and position it at (0,0,0)
@@ -50,22 +51,24 @@ def create_TShape(outer_diameter, inner_diameter, height_vertical, height_horizo
     final_shape = vertical_cylinder.fuse(horizontal_cylinder)
 	
     # Add the final shape to the document
-    final_shape_obj = doc.addObject("Part::Feature", "FinalShape")
+    final_shape_obj = doc.addObject("Part::Feature", nombre)
     final_shape_obj.Shape = final_shape
     return()
 
-def create_Cilindrito(outer_diameter, 
+def create_Cilindro(outer_diameter, 
 		inner_diameter, 
 		height_vertical, 
 		distancia_desde_centro_horizontal,
-		distancia_desde_centro_vertical):
+		distancia_desde_centro_vertical,
+		nombre
+		):
 
     # Create the vertical hollow cylinder and position it at (0,0,0)
     cilindrito = create_hollow_cylinder(outer_diameter, inner_diameter, height_vertical)
     cilindrito.Placement.Base = FreeCAD.Vector(distancia_desde_centro_horizontal, 
 				      0, 
 				       distancia_desde_centro_vertical)
-    final_shape_obj = doc.addObject("Part::Feature", "Cilindrito")
+    final_shape_obj = doc.addObject("Part::Feature", nombre)
     final_shape_obj.Shape = cilindrito
     return()
 
@@ -76,44 +79,99 @@ create_TShape(outer_diameter_def,
 	    inner_diameter_def, 
               height_vertical_def, 
               height_horizontal_def,
-              -distancia_desde_centro_def)
+              -distancia_desde_centro_def,
+	    "TShape1")
 
 create_TShape(outer_diameter_def, 
 	    inner_diameter_def, 
               height_vertical_def, 
               height_horizontal_def,
-              distancia_desde_centro_def)
+              distancia_desde_centro_def,
+"TShape2")
 
 distancia_desde_centro_vertical_def=distancia_desde_centro_vertical_def-15
 
-create_Cilindrito(outer_diameter_def, 
+create_Cilindro(outer_diameter_def, 
 		inner_diameter_def, 
 		height_vertical_cilindrito_def, 
 		distancia_desde_centro_def, 
-		distancia_desde_centro_vertical_def)
+		distancia_desde_centro_vertical_def,
+		"Cilindrito1")
 
-create_Cilindrito(outer_diameter_def, 
+create_Cilindro(outer_diameter_def, 
 		inner_diameter_def, 
 		height_vertical_cilindrito_def, 
 		-distancia_desde_centro_def, 
-		distancia_desde_centro_vertical_def)
+		distancia_desde_centro_vertical_def,
+"Cilindrito2")
 
 distancia_desde_centro_vertical_def=distancia_desde_centro_vertical_def-10
 
-create_Cilindrito(outer_diameter_def, 
+create_Cilindro(outer_diameter_def, 
 		inner_diameter_def, 
 		height_vertical_cilindrito_def, 
 		distancia_desde_centro_def, 
-		distancia_desde_centro_vertical_def)
+		distancia_desde_centro_vertical_def,
+"Cilindrito3")
 
-create_Cilindrito(outer_diameter_def, 
+create_Cilindro(outer_diameter_def, 
 		inner_diameter_def, 
 		height_vertical_cilindrito_def, 
 		-distancia_desde_centro_def, 
-		distancia_desde_centro_vertical_def)
+		distancia_desde_centro_vertical_def,
+"Cilindrito4")
+
+
+#####CILINDROS GRANDES
+
+create_Cilindro(outer_diameter_def, 
+		inner_diameter_def, 
+		height_vertical_cilindroGrande_def, 
+		30, 
+		-50,
+"CilindroGrande1")
+
+
+create_Cilindro(outer_diameter_def, 
+		inner_diameter_def, 
+		height_vertical_cilindroGrande_def, 
+		40, 
+		-50,
+"CilindroGrande2")
+
+create_Cilindro(outer_diameter_def, 
+		inner_diameter_def, 
+		height_vertical_cilindroGrande_def, 
+		50, 
+		-50,
+"CilindroGrande3")
+
+create_Cilindro(outer_diameter_def, 
+		inner_diameter_def, 
+		height_vertical_cilindroGrande_def, 
+		60, 
+		-50,
+"CilindroGrande4")
 
 
 
+####################
+####################
+#PLACEMENTS
+####################
+####################
+
+
+body = doc.getObject('CilindroGrande4')
+
+# Modify the placement
+new_placement = body.Placement
+new_placement.Base.x += 10  # Move 10 units along the X-axis
+new_placement.Base.y += 0   # Move 0 units along the Y-axis
+new_placement.Base.z += 0   # Move 0 units along the Z-axis
+
+# Apply the new placement
+body.Placement = new_placement
 
 
 
@@ -125,4 +183,3 @@ view = FreeCAD.Gui.ActiveDocument.ActiveView
 view.viewAxonometric()
 
 print("Hollow cylinders created and merged successfully!")
-
