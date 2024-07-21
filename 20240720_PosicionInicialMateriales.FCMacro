@@ -1,0 +1,45 @@
+import FreeCAD as App
+
+# Ensure the document is loaded and active
+doc = App.getDocument('HollowCylindersTShape')
+
+
+def func_newPlacement(x,y,z,nombre):
+    # Get the body you want to modify
+    body = doc.getObject(nombre)
+
+    # Modify the placement
+    new_placement = body.Placement
+    new_placement.Base.x = x  # Move 10 units along the X-axis
+    new_placement.Base.y = y   # Move 0 units along the Y-axis
+    new_placement.Base.z = z   # Move 0 units along the Z-axis
+
+    # Apply the new placement
+    body.Placement = new_placement
+
+############
+############
+############
+func_newPlacement(10,0,0,"TShape1")
+func_newPlacement(-10,0,0,"TShape2")
+############
+func_newPlacement(10,0,-10,"Cilindrito1")
+func_newPlacement(-10,0,-10,"Cilindrito2")
+func_newPlacement(10,0,-20,"Cilindrito3")
+func_newPlacement(-10,0,-20,"Cilindrito4")
+############
+func_newPlacement(30,0,-50,"CilindroGrande1")
+func_newPlacement(35,0,-50,"CilindroGrande2")
+func_newPlacement(40,0,-50,"CilindroGrande3")
+func_newPlacement(45,0,-50,"CilindroGrande4")
+############
+func_newPlacement(10,0,-30,"Body1")
+func_newPlacement(-10,0,-30,"Body2")
+func_newPlacement(10,0,-40,"Body3")
+func_newPlacement(-10,0,-40,"Body4")
+func_newPlacement(10,0,-50,"Body5")
+func_newPlacement(-10,0,-50,"Body6")
+
+
+# Recompute the document to apply changes
+doc.recompute()
