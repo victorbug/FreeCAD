@@ -1,0 +1,108 @@
+import FreeCAD as App
+
+# Ensure the document is loaded and active
+doc = App.getDocument('HollowCylindersTShape')
+
+
+def func_newPlacement(x,y,z,nombre):
+    # Get the body you want to modify
+    body = doc.getObject(nombre)
+
+    # Modify the placement
+    new_placement = body.Placement
+    new_placement.Base.x = x  # Move 10 units along the X-axis
+    new_placement.Base.y = y   # Move 0 units along the Y-axis
+    new_placement.Base.z = z   # Move 0 units along the Z-axis
+
+    # Apply the new placement
+    body.Placement = new_placement
+
+
+def rotate_object(obj_name, angle, axis):
+  
+    obj = doc.getObject(obj_name)
+    
+    # Create a rotation object
+    rotation = App.Rotation(App.Vector(axis[0], axis[1], axis[2]), angle)
+    
+    # Apply rotation to the object's current placement
+    obj.Placement.Rotation = rotation.multiply(obj.Placement.Rotation)
+    
+    # Recompute document to apply changes
+    doc.recompute()
+
+
+
+############
+############
+############
+func_newPlacement(10,0,0,"TShape1")
+func_newPlacement(-10,0,0,"TShape2")
+############
+func_newPlacement(10,0,-10,"Cilindrito1")
+func_newPlacement(-10,0,-10,"Cilindrito2")
+func_newPlacement(10,0,-20,"Cilindrito3")
+func_newPlacement(-10,0,-20,"Cilindrito4")
+############
+func_newPlacement(30,0,-50,"CilindroGrande1")
+func_newPlacement(35,0,-50,"CilindroGrande2")
+func_newPlacement(40,0,-50,"CilindroGrande3")
+func_newPlacement(45,0,-50,"CilindroGrande4")
+############
+func_newPlacement(10,0,-30,"Body1")
+func_newPlacement(-10,0,-30,"Body2")
+func_newPlacement(10,0,-40,"Body3")
+func_newPlacement(-10,0,-40,"Body4")
+func_newPlacement(10,0,-50,"Body5")
+func_newPlacement(-10,0,-50,"Body6")
+
+
+
+
+############
+############
+############
+############
+    
+boo_rotate=False
+if(boo_rotate):
+    rotate_object('TShape1', -90, (0, 1, 0)) 
+    rotate_object('Cilindrito1', -90, (0, 1, 0)) 
+    rotate_object('Body1', 90, (0, 1, 0)) 
+    rotate_object('Body2', -90, (0, 1, 0)) 
+    rotate_object('Cilindrito2', -90, (0, 1, 0)) 
+    rotate_object('Body3', -180, (0, 1, 0)) 
+
+
+func_newPlacement(20,0,0,"Cilindrito1")
+func_newPlacement(25,0,0,"Body1")
+func_newPlacement(32,0,-70,"CilindroGrande1")
+func_newPlacement(39,0,-80,"Body2")
+func_newPlacement(50,0,-80,"Cilindrito2")
+func_newPlacement(60,0,-73,"Body3")
+func_newPlacement(60,0,-70,"CilindroGrande2")
+
+############
+############
+############
+############
+    
+if(boo_rotate):
+    rotate_object('TShape2', -90, (0, 1, 0)) 
+    rotate_object('Cilindrito3', -90, (0, 1, 0)) 
+    rotate_object('Body4', 90, (0, 1, 0)) 
+    rotate_object('Body5', -90, (0, 1, 0)) 
+    rotate_object('Cilindrito4', -90, (0, 1, 0)) 
+    rotate_object('Body6', -180, (0, 1, 0)) 
+
+func_newPlacement(10,100,0,"TShape2")
+func_newPlacement(20,100,0,"Cilindrito3")
+func_newPlacement(25,100,0,"Body4")
+func_newPlacement(32,100,-70,"CilindroGrande3")
+func_newPlacement(39,100,-80,"Body5")
+func_newPlacement(50,100,-80,"Cilindrito4")
+func_newPlacement(60,100,-73,"Body6")
+func_newPlacement(60,100,-70,"CilindroGrande4")
+
+# Recompute the document to apply changes
+doc.recompute()
