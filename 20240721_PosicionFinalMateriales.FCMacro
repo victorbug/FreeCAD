@@ -64,7 +64,8 @@ func_newPlacement(-10,0,-50,"Body6")
 ############
 ############
     
-boo_rotate=False
+#boo_rotate=False
+boo_rotate=True
 if(boo_rotate):
     rotate_object('TShape1', -90, (0, 1, 0)) 
     rotate_object('Cilindrito1', -90, (0, 1, 0)) 
@@ -104,5 +105,114 @@ func_newPlacement(50,100,-80,"Cilindrito4")
 func_newPlacement(60,100,-73,"Body6")
 func_newPlacement(60,100,-70,"CilindroGrande4")
 
+###############
+#COLORES
+###############
+
+if(False):
+    view_object = Gui.getDocument("HollowCylindersTShape").getObject("TShape2")
+    view_object.DiffuseColor = [(1.,0.,0.)]
+    Gui.Selection.addSelection('HollowCylindersTShape','Cilindrito3','Face2',0.,0.,1.)
+
+#view_object = App.getDocument("HollowCylindersTShape").getObject("TShape2")
+#Gui.ActiveDocument.Box.DiffuseColor=[(1.,0.,0.),(0.,1.,0.),(0.,0.,1.),(1.,1.,0.),(1.,0.,1.),(0.,1.,1.)]
+#view_object.DiffuseColor = (1.0,1.0,0.0)#TIene que tener decimales o sino queda negro
+
+
+
+
+    
 # Recompute the document to apply changes
+
+
+
+def func_changeColors(nombreShape, face_index, bocaGrandeoPequeña):
+    import FreeCAD as App
+    import FreeCADGui as Gui
+
+    # Select the specific face of the object
+    #Gui.Selection.clearSelection()  # Clear any previous selections
+    #Gui.Selection.addSelection('HollowCylindersTShape', nombreShape, nombreFace)
+
+    # Get the selected object and its view object
+    doc = App.getDocument('HollowCylindersTShape')
+    obj = doc.getObject(nombreShape)
+    view_obj = Gui.getDocument('HollowCylindersTShape').getObject(nombreShape)
+
+    # Set the color for the specific face (assuming face index 2 for 'Face3')
+    # The DiffuseColor property is a list where each index corresponds to a face
+    #face_index = 2  # Adjust this index based on your face numbering
+
+
+    # Ensure the DiffuseColor list is long enough
+    #colors = list(view_obj.DiffuseColor) if hasattr(view_obj, 'DiffuseColor') else []
+    #print("colors: ", colors)
+    #while len(colors) <= face_index:
+    #    colors.append((1.0, 1.0, 1.0))  # Default to white if there are not enough colors
+    #for i in colors:
+    #colors.append((204.0, 204.0, 204.0))
+
+    if(bocaGrandeoPequeña=="bocaPequeña"):
+        color = (0.0, 1.0, 0.0)  # Green color
+    elif(bocaGrandeoPequeña=="bocaGrande"):
+        color = (1.0, 0.0, 0.0)  # Red color    
+    else:
+        0/0 #ingresar string correcto
+
+    coloresAnteriores = view_obj.DiffuseColor
+    print("coloresAnteriores: ", coloresAnteriores)
+    #colors=[(204.,204.,204.),(204.,204.,204.),(204.,204.,204.),(204.,204.,204.)]
+    #colors=[(0.8,0.8,0.8),(0.8,0.8,0.8),(0.8,0.8,0.8),(0.8,0.8,0.8)]
+    num_faces = len(obj.Shape.Faces)
+
+
+    #for i, t in enumerate(coloresAnteriores):
+    #    print("entro al for")
+    #    print("len(t): ", len(t))
+    #    if (len(t) == num_faces and len(coloresAnteriores)==1):
+
+#            print(f"Tuple at index {i} has less than 3 elements, por lo tanto es un objeto que entra por primera vez: {t}")
+#            # Perform any other action you need here
+            # For example, you could replace the tuple with a default value
+            #tuples_list[i] = (0.8, 0.8, 0.8)
+            #print(f"Replaced tuple at index {i} with: {tuples_list[i]}")
+#            coloresAnteriores=[(0.8,0.8,0.8)]*num_faces
+#            print("entro al print raro")
+ #           break
+            
+    if (len(coloresAnteriores) == num_faces): #Tantas tuplas como caras. Es modificado, a menos de que tenga una sola cara donde no es modificado
+        if(num_faces==1 and len(coloresAnteriores[0])==1):#Siempre el no modificado tira una sola tupla. Si es una sola cara y la primera tupla tiene un solo elemento
+            print("No es modificado")
+            coloresAnteriores=[(0.8,0.8,0.8)]*num_faces
+        elif (num_faces==1 and len(coloresAnteriores[0])==3):
+            print("Si es modificado")
+            pass
+    elif (len(coloresAnteriores) != num_faces):
+        print("No es modificado")
+        coloresAnteriores=[(0.8,0.8,0.8)]*num_faces
+
+
+    
+
+#or len(coloresAnteriores[0])!=3):#ejemplo 1 tupla 4 caras. Lo unico que puede pasar es 1 tupla si hay 1 cara. Seria 1 tupla con 1 solo elemeto en la tupla
+    #    print("NO HA SIDO MODIFICADO")#Original siempre hace una sola tupla osea: len(coloresAnteriores) es 1
+    #Cuando modificado va a tener tantas tuplas como caras
+    #colors=[(1.,1.,0.),(1.,0.,1.),(1.,1.,0.),(1.,1.,0.)]
+    # Set the color of the specific face
+    #colors[face_index-1] = color
+    coloresAnteriores[face_index-1] = color
+    #view_obj.DiffuseColor = colors
+    view_obj.DiffuseColor = coloresAnteriores
+    
+    # Recompute the document to apply changes
+    App.ActiveDocument.recompute()
+
+
+func_changeColors("Cilindrito3", 2, "bocaPequeña")
+func_changeColors("Cilindrito3", 3, "bocaGrande")
+
+
+
+
+
 doc.recompute()
