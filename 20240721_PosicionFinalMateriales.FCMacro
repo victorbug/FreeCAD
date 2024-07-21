@@ -44,6 +44,8 @@ func_newPlacement(-10,0,-10,"Cilindrito2")
 func_newPlacement(10,0,-20,"Cilindrito3")
 func_newPlacement(-10,0,-20,"Cilindrito4")
 ############
+
+############
 func_newPlacement(30,0,-50,"CilindroGrande1")
 func_newPlacement(35,0,-50,"CilindroGrande2")
 func_newPlacement(40,0,-50,"CilindroGrande3")
@@ -64,8 +66,8 @@ func_newPlacement(-10,0,-50,"Body6")
 ############
 ############
     
-#boo_rotate=False
-boo_rotate=True
+boo_rotate=False
+#boo_rotate=True
 if(boo_rotate):
     rotate_object('TShape1', -90, (0, 1, 0)) 
     rotate_object('Cilindrito1', -90, (0, 1, 0)) 
@@ -83,6 +85,8 @@ func_newPlacement(50,0,-80,"Cilindrito2")
 func_newPlacement(60,0,-73,"Body3")
 func_newPlacement(60,0,-70,"CilindroGrande2")
 
+func_newPlacement(20,10,0,"CilindritoAserruchado1")
+func_newPlacement(50,10,-80,"CilindritoAserruchado2")
 ############
 ############
 ############
@@ -104,6 +108,9 @@ func_newPlacement(39,100,-80,"Body5")
 func_newPlacement(50,100,-80,"Cilindrito4")
 func_newPlacement(60,100,-73,"Body6")
 func_newPlacement(60,100,-70,"CilindroGrande4")
+
+func_newPlacement(20,110,0,"CilindritoAserruchado3")
+func_newPlacement(50,110,-80,"CilindritoAserruchado4")
 
 ###############
 #COLORES
@@ -160,7 +167,7 @@ def func_changeColors(nombreShape, face_index, bocaGrandeoPequeña):
         0/0 #ingresar string correcto
 
     coloresAnteriores = view_obj.DiffuseColor
-    print("coloresAnteriores: ", coloresAnteriores)
+    #print("coloresAnteriores: ", coloresAnteriores)
     #colors=[(204.,204.,204.),(204.,204.,204.),(204.,204.,204.),(204.,204.,204.)]
     #colors=[(0.8,0.8,0.8),(0.8,0.8,0.8),(0.8,0.8,0.8),(0.8,0.8,0.8)]
     num_faces = len(obj.Shape.Faces)
@@ -182,13 +189,13 @@ def func_changeColors(nombreShape, face_index, bocaGrandeoPequeña):
             
     if (len(coloresAnteriores) == num_faces): #Tantas tuplas como caras. Es modificado, a menos de que tenga una sola cara donde no es modificado
         if(num_faces==1 and len(coloresAnteriores[0])==1):#Siempre el no modificado tira una sola tupla. Si es una sola cara y la primera tupla tiene un solo elemento
-            print("No es modificado")
+            #print("No es modificado")
             coloresAnteriores=[(0.8,0.8,0.8)]*num_faces
         elif (num_faces==1 and len(coloresAnteriores[0])==3):
-            print("Si es modificado")
+            #print("Si es modificado")
             pass
     elif (len(coloresAnteriores) != num_faces):
-        print("No es modificado")
+        #print("No es modificado")
         coloresAnteriores=[(0.8,0.8,0.8)]*num_faces
 
 
@@ -208,10 +215,66 @@ def func_changeColors(nombreShape, face_index, bocaGrandeoPequeña):
     App.ActiveDocument.recompute()
 
 
-func_changeColors("Cilindrito3", 2, "bocaPequeña")
-func_changeColors("Cilindrito3", 3, "bocaGrande")
+if False:
+    func_changeColors("Cilindrito1", 2, "bocaGrande")
+    func_changeColors("Cilindrito1", 3, "bocaGrande")
+    func_changeColors("Cilindrito2", 2, "bocaGrande")
+    func_changeColors("Cilindrito2", 3, "bocaGrande")
+    func_changeColors("Cilindrito3", 2, "bocaGrande")
+    func_changeColors("Cilindrito3", 3, "bocaGrande")
+    func_changeColors("Cilindrito4", 2, "bocaGrande")
+    func_changeColors("Cilindrito4", 3, "bocaGrande")
+
+    func_changeColors("Clone1", 1, "bocaGrande")
+    func_changeColors("Clone1", 5, "bocaPequeña")
+    func_changeColors("Clone2", 1, "bocaGrande")
+    func_changeColors("Clone2", 5, "bocaPequeña")
+    func_changeColors("Clone3", 1, "bocaGrande")
+    func_changeColors("Clone3", 5, "bocaPequeña")
+    func_changeColors("Clone4", 1, "bocaGrande")
+    func_changeColors("Clone4", 5, "bocaPequeña")
+    func_changeColors("Clone5", 1, "bocaGrande")
+    func_changeColors("Clone5", 5, "bocaPequeña")
+    func_changeColors("Clone6", 1, "bocaGrande")
+    func_changeColors("Clone6", 5, "bocaPequeña")
+
+func_changeColors("TShape1", 2, "bocaGrande")
+func_changeColors("TShape1", 5, "bocaGrande")
+func_changeColors("TShape1", 3, "bocaPequeña")
+
+func_changeColors("TShape2", 2, "bocaGrande")
+func_changeColors("TShape2", 5, "bocaGrande")
+func_changeColors("TShape2", 3, "bocaPequeña")
+
+func_changeColors("CilindroGrande1", 1, "bocaPequeña")
+func_changeColors("CilindroGrande2", 1, "bocaPequeña")
+func_changeColors("CilindroGrande3", 1, "bocaPequeña")
+func_changeColors("CilindroGrande4", 1, "bocaPequeña")
 
 
+func_changeColors("Cilindrito1", 1, "bocaGrande")
+func_changeColors("Cilindrito2", 1, "bocaGrande")
+func_changeColors("Cilindrito3", 1, "bocaGrande")
+func_changeColors("Cilindrito4", 1, "bocaGrande")
+
+func_changeColors("CilindritoAserruchado1", 1, "bocaPequeña")
+func_changeColors("CilindritoAserruchado2", 1, "bocaPequeña")
+func_changeColors("CilindritoAserruchado3", 1, "bocaPequeña")
+func_changeColors("CilindritoAserruchado4", 1, "bocaPequeña")
+
+
+func_changeColors("Clone1", 4, "bocaGrande")
+func_changeColors("Clone1", 2, "bocaPequeña")
+func_changeColors("Clone2", 4, "bocaGrande")
+func_changeColors("Clone2", 2, "bocaPequeña")
+func_changeColors("Clone3", 4, "bocaGrande")
+func_changeColors("Clone3", 2, "bocaPequeña")
+func_changeColors("Clone4", 4, "bocaGrande")
+func_changeColors("Clone4", 2, "bocaPequeña")
+func_changeColors("Clone5", 4, "bocaGrande")
+func_changeColors("Clone5", 2, "bocaPequeña")
+func_changeColors("Clone6", 4, "bocaGrande")
+func_changeColors("Clone6", 2, "bocaPequeña")
 
 
 
