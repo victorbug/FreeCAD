@@ -74,19 +74,22 @@ if(boo_rotate):
     rotate_object('Body1', 90, (0, 1, 0)) 
     rotate_object('Body2', -90, (0, 1, 0)) 
     rotate_object('Cilindrito2', -90, (0, 1, 0)) 
-    rotate_object('Body3', -180, (0, 1, 0)) 
+    rotate_object('Body3', 90, (0, 1, 0)) 
+    rotate_object('Body3', 180, (1, 0, 0)) 
+    rotate_object('CilindritoAserruchado1', -90, (0, 1, 0)) 
+    #rotate_object('CilindritoAserruchado2', -90, (0, 1, 0)) 
 
-
+func_newPlacement(0,0,0,"TShape1")
 func_newPlacement(20,0,0,"Cilindrito1")
 func_newPlacement(25,0,0,"Body1")
 func_newPlacement(32,0,-70,"CilindroGrande1")
 func_newPlacement(39,0,-80,"Body2")
 func_newPlacement(50,0,-80,"Cilindrito2")
-func_newPlacement(60,0,-73,"Body3")
+func_newPlacement(53,0,-80,"Body3")
 func_newPlacement(60,0,-70,"CilindroGrande2")
 
-func_newPlacement(20,10,0,"CilindritoAserruchado1")
-func_newPlacement(50,10,-80,"CilindritoAserruchado2")
+func_newPlacement(10,0,0,"CilindritoAserruchado1")
+#func_newPlacement(60,0,-80,"CilindritoAserruchado2")
 ############
 ############
 ############
@@ -98,19 +101,24 @@ if(boo_rotate):
     rotate_object('Body4', 90, (0, 1, 0)) 
     rotate_object('Body5', -90, (0, 1, 0)) 
     rotate_object('Cilindrito4', -90, (0, 1, 0)) 
-    rotate_object('Body6', -180, (0, 1, 0)) 
+    rotate_object('Body6', 90, (0, 1, 0)) 
+    rotate_object('Body6', 180, (1, 0, 0)) 
+    rotate_object('CilindritoAserruchado3', -90, (0, 1, 0)) 
+    #rotate_object('CilindritoAserruchado4', -90, (0, 1, 0)) 
 
-func_newPlacement(10,100,0,"TShape2")
+func_newPlacement(0,100,0,"TShape2")
 func_newPlacement(20,100,0,"Cilindrito3")
 func_newPlacement(25,100,0,"Body4")
 func_newPlacement(32,100,-70,"CilindroGrande3")
 func_newPlacement(39,100,-80,"Body5")
 func_newPlacement(50,100,-80,"Cilindrito4")
-func_newPlacement(60,100,-73,"Body6")
+func_newPlacement(53,100,-80,"Body6")
 func_newPlacement(60,100,-70,"CilindroGrande4")
 
-func_newPlacement(20,110,0,"CilindritoAserruchado3")
-func_newPlacement(50,110,-80,"CilindritoAserruchado4")
+func_newPlacement(10,100,0,"CilindritoAserruchado3")
+#func_newPlacement(60,100,-80,"CilindritoAserruchado4")
+
+
 
 ###############
 #COLORES
@@ -277,5 +285,10 @@ func_changeColors("Clone6", 4, "bocaGrande")
 func_changeColors("Clone6", 2, "bocaPequeña")
 
 
+obj = doc.getObject("CilindritoAserruchado2")
+obj.Visibility = not obj.Visibility
+obj = doc.getObject("CilindritoAserruchado4")
+obj.Visibility = not obj.Visibility
+Gui.updateGui()
 
 doc.recompute()
