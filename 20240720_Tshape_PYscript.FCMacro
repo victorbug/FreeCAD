@@ -127,7 +127,34 @@ create_Cilindro(outer_diameter_def,
 		-distancia_desde_centro_def, 
 		distancia_desde_centro_vertical_def,
 "Cilindrito4")
+#####
+create_Cilindro(outer_diameter_def, 
+		inner_diameter_def, 
+		height_vertical_cilindrito_def, 
+		-distancia_desde_centro_def, 
+		distancia_desde_centro_vertical_def,
+"CilindritoAserruchado1")
 
+create_Cilindro(outer_diameter_def, 
+		inner_diameter_def, 
+		height_vertical_cilindrito_def, 
+		-distancia_desde_centro_def, 
+		distancia_desde_centro_vertical_def,
+"CilindritoAserruchado2")
+
+create_Cilindro(outer_diameter_def, 
+		inner_diameter_def, 
+		height_vertical_cilindrito_def, 
+		-distancia_desde_centro_def, 
+		distancia_desde_centro_vertical_def,
+"CilindritoAserruchado3")
+
+create_Cilindro(outer_diameter_def, 
+		inner_diameter_def, 
+		height_vertical_cilindrito_def, 
+		-distancia_desde_centro_def, 
+		distancia_desde_centro_vertical_def,
+"CilindritoAserruchado4")
 
 #####CILINDROS GRANDES
 
